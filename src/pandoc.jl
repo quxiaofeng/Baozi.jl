@@ -1,3 +1,5 @@
+module Pandoc
+
 ############################
 # This is a Pandoc wrapper #
 ############################
@@ -96,3 +98,5 @@ function check_pandoc_version()
 end
 
 export pandoc
+
+end

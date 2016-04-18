@@ -3,6 +3,9 @@ module Baozi
 VERSION >= v"0.4.0-dev+6521" && __precompile__()
 
 using Nettle,YAML
+
+include("pandoc.jl")
+using Pandoc
 # check if pandoc exists
 
 @windows_only error("Do not support Windows at present :-(\n")
@@ -18,45 +21,30 @@ using Nettle,YAML
     end
 else
     # warn on other unix system
-    print("""
+    warn("""
         Well 
         you could try this, but it may not work at present
         ;-)
         """)
 end
 
-include("pandoc.jl")
-
 #####################
 # Init a Baozi site #
 #####################
 
-function init(;git_remote=nothing)
+function init(name::AbstractString;git_remote=nothing)
+    dir = dirname(@__FILE__)
+
     try
-        mkdir("_posts")
-        mkdir("_slides")
-        mkdir("_posts")
-        mkdir("posts")
-        mkdir("img")
+        cp(string(dir,"/site_template"),"$(pwd())/$(name)")
     catch
     end
 
-    dir = dirname(@__FILE__)
-    try cp(string(dir,"/plugins"),"$(pwd())/plugins") end
-    try cp(string(dir,"/templates"),"$(pwd())/templates") end
-    try cp(string(dir,"/../manual.md"),"$(pwd())/README.md") end
-    try cp(string(dir,"/slide_test.md"),"$(pwd())/_slides/slide-test.md") end
-    try cp(string(dir,"/../manual.md"),"$(pwd())/_posts/manual.md") end
-
-    cp(string(dir,"/../baozi"),"$(pwd())/baozi")
+    cp(string(dir,"/baozi"),"$(pwd())/baozi")
     chmod("$(pwd())/baozi",0o777)
-
-    template_dir = string(pwd(),"/templates")
-    pandoc("README.md";o="index.html",toc=true,toc_depth=2,template="$(template_dir)/index.html")
 
     run(`git init`)
     git_remote!=nothing?run(`git remote add origin $(git_remote)`):nothing
-
 end
 
 # render a given directory

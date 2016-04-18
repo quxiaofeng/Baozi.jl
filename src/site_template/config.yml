@@ -1,0 +1,40 @@
+# permalink and highlighter
+permalink   : /:year/:title/
+markdown: kramdown
+
+kramdown:
+  input: GFM
+  extensions:
+    - autolink
+    - footnotes
+    - smart
+
+redcarpet:
+    extensions: [ "footnotes", "with_toc_data", "highlight", "fenced_code_blocks"]
+
+# SEO settings
+title: Roger Luo's Citadel
+description: "Roger Luo's homepage"
+keywords: "Roger Luo, homepage, blog"
+
+# Site settings
+url: http://rogerluo.cc/
+
+# baseurl: ""
+
+# Author settings
+author:
+  name      : Roger Luo
+  job       : Phycisist
+  bio       : "在物理系装X写代码."
+  thumb     : /images/author.jpg
+  email     : hiroger@qq.com
+  url       : http://rogerluo.cc
+  github    : http://github.com/Roger-luo
+  facebook  : http://facebook.com/rogerluo
+
+# google_analytics: UA-52446115-1
+# repo: http://github.com/nandomoreirame/dotX
+
+# comments
+# disqus_shortname: "fernandomoreira"
