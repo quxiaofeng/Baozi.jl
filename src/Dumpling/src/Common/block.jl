@@ -42,9 +42,11 @@ end
 
 type Header{level}
     text
+    attrs
 end
 
-Header(s, level::Int) = Header{level}(s)
+Header(s, level::Int, attrs::Union{Dict,Void}) = Header{level}(s,attrs)
+Header(s, level::Int) = Header(s, level, nothing)
 Header(s) = Header(s, 1)
 
 @breaking true ->
@@ -62,10 +64,24 @@ function hashheader(stream::IO, md::MD)
 
         if c != '\n' # Empty header
             h = readline(stream) |> strip
-            h = match(r"(.*?)( +#+)?$", h).captures[1]
+
+            # header with attributes
+            if ismatch(r"(.*?)( +#+)? +{(\w+=\w+)(,\w+=\w+)*}$", h)
+                h = match(r"(.*?)( +#+)? +{((\w+=\w+)([ ,]\w+=\w+)*)}$",h)
+                attr = Dict()
+                for item in split(h.captures[3],[',',' '])
+                    temp = split(item,'=')
+                    attr[temp[1]] = temp[2]
+                end
+
+                h = h.captures[1]
+            elseif ismatch(r"(.*?)( +#+)?$", h)
+                h = match(r"(.*?)( +#+)?$", h).captures[1]
+                attr=nothing
+            end
             buffer = IOBuffer()
             print(buffer, h)
-            push!(md.content, Header(parseinline(seek(buffer, 0), md), level))
+            push!(md.content, Header(parseinline(seek(buffer, 0), md), level, attr))
         else
             push!(md.content, Header("", level))
         end

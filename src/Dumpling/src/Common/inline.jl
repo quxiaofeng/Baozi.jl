@@ -127,3 +127,26 @@ function escapes(stream::IO, md::MD)
         end
     end
 end
+
+# –––––––––––
+# Punctuation
+# –––––––––––
+
+# type attributes
+#     elem::Dict
+# end
+
+# @trigger '{' ->
+# function attributes(stream::IO, md::MD)
+#     withstream(stream) do 
+#         startswith(stream, '{') || return
+#         text = readuntil(stream,'}', match='{')
+#         text ≡ nothing && return
+#         result = Dict() 
+#         for item in split(text,',')
+#             temp = split(item,'=')
+#             result[temp[1]] = temp[2]
+#         end
+#         return attributes(result)
+#     end
+# end

@@ -60,8 +60,14 @@ end
 html(io::IO, md::MD) = html(io, md.content)
 
 function html{l}(io::IO, header::Header{l})
-    withtag(io, "h$l") do
-        htmlinline(io, header.text)
+    if header.attrs != nothing
+        withtag(io, "h$l", header.attrs...) do
+            htmlinline(io, header.text)
+        end
+    else
+        withtag(io, "h$l") do
+            htmlinline(io, header.text)
+        end
     end
 end
 
