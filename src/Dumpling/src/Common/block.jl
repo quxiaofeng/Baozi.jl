@@ -101,7 +101,6 @@ function setextheader(stream::IO, md::MD)
         u = underline[1]
         u in "-=" || return false
         all(c -> c == u, underline) || return false
-        level = (u == '=') ? 1 : 2
 
         push!(md.content, Header(parseinline(header, md), level))
         return true

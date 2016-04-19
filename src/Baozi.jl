@@ -1,11 +1,14 @@
 module Baozi
 
-VERSION >= v"0.4.0-dev+6521" && __precompile__()
+# VERSION >= v"0.4.0-dev+6521" && __precompile__()
 
 using Nettle,YAML
 
+include("Dumpling/src/Dumpling.jl")
 include("pandoc.jl")
+include("template_parse.jl")
 using Pandoc
+
 # check if pandoc exists
 
 @windows_only error("Do not support Windows at present :-(\n")
@@ -28,6 +31,8 @@ else
         """)
 end
 
+global working_dir = pwd()
+
 #####################
 # Init a Baozi site #
 #####################
@@ -40,8 +45,8 @@ function init(name::AbstractString;git_remote=nothing)
     catch
     end
 
-    cp(string(dir,"/baozi"),"$(pwd())/baozi")
-    chmod("$(pwd())/baozi",0o777)
+    cp(string(dir,"/baozi"),"$(pwd())/$(name)/baozi")
+    chmod("$(pwd())/$(name)/baozi",0o777)
 
     run(`git init`)
     git_remote!=nothing?run(`git remote add origin $(git_remote)`):nothing
@@ -51,7 +56,7 @@ end
 
 function render_dir(dir::AbstractString,working_dir::AbstractString)
     cd(working_dir)
-    template_dir = string(working_dir,"/templates")
+    template_dir = string(working_dir,"/_layouts")
 
     dir_list = readdir(dir)
     content_list = filter(x->ismatch(r"(.*).md",x),dir_list)
@@ -101,7 +106,7 @@ function gen(working_dir::AbstractString;commit=nothing)
         render_dir(dir,working_dir)
     end
 
-    template_dir = string(pwd(),"/templates")
+    template_dir = string(pwd(),"/_layouts")
     pandoc("README.md";o="index.html",toc=true,toc_depth=2,template="$(template_dir)/index.html")
 
     run(`git add *`)
@@ -114,6 +119,6 @@ function gen(working_dir::AbstractString;commit=nothing)
     end
 end
 
-export init,gen
+export init,gen,template_render,Dumpling
 
 end # module
