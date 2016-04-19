@@ -3,9 +3,10 @@
 type MD
     content::Vector{Any}
     meta::Dict{Any, Any}
+    attrs::Dict{Any, Any}
 
-    MD(content::AbstractVector, meta::Dict = Dict()) =
-        new(content, meta)
+    MD(content::AbstractVector, meta::Dict = Dict(), attrs::Dict = Dict()) =
+        new(content, meta, attrs)
 end
 
 MD(xs...) = MD(vcat(xs...))
@@ -93,6 +94,10 @@ parse(stream::IO, block::MD; breaking = false) =
 function parse(stream::IO; flavor = julia)
     isa(flavor, Symbol) && (flavor = flavors[flavor])
     markdown = MD(flavor)
+    withstream(stream) do
+        startswith(stream, "---", padding=true) || return false
+        markdown.attrs = YAML.load(stream)
+    end
     while parse(stream, markdown, flavor) end
     return markdown
 end

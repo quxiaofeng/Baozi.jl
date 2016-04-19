@@ -2,6 +2,8 @@
 
 module Dumpling
 
+import YAML
+
 import Base: writemime, ==
 
 include("parse/config.jl")
