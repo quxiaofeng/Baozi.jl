@@ -31,8 +31,6 @@ else
         """)
 end
 
-global working_dir = pwd()
-
 #####################
 # Init a Baozi site #
 #####################
@@ -44,7 +42,7 @@ function init(name::AbstractString;git_remote=nothing)
         cp(string(dir,"/site_template"),"$(pwd())/$(name)")
     catch
     end
-
+    global working_dir = "$(pwd())/$(name)"
     cp(string(dir,"/baozi"),"$(pwd())/$(name)/baozi")
     chmod("$(pwd())/$(name)/baozi",0o777)
 

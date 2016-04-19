@@ -70,6 +70,7 @@ function readuntil(stream::IO, delimiter; newlines = false, match = nothing)
     end
 end
 
+
 function template_render(out::IO, md::Dumpling.MD)
     layout = get(md,"layout")
     if layout==false 
@@ -85,16 +86,29 @@ function template_render(out::IO, md::Dumpling.MD)
 
     template = IOBuffer(readstring("$(working_dir)/_layouts/$(layout).html"))
 
-    global content = Dumpling.html(md)
-
+    page = md.attrs
+    page["content"] = Dumpling.html(md.content)
+    site = YAML.load_file("$(working_dir)/config.yml")
     while !eof(template)
-        if startswith(template,"{%")
-            text = readuntil(template,"%}",match="{%")
-            text = text|>parse|>eval
-            write(out,text)
+        if startswith(template,"{{")
+            text = readuntil(template, "}}")
+            text = split(text)
+            for item in text
+                item=="page.content" && write(out,page["content"])
+                item=="site.url" && write(out,site["url"])
+            end
+        else
+            char = read(template,Char)
+            write(out,char)
         end
-        char = read(template,Char)
-        write(out,char)
+
+        # if startswith(template,"{%")
+        #     text = readuntil(template,"%}",match="{%")
+        #     text = text|>parse|>eval
+        #     write(out,text)
+        # else
+        # char = read(template,Char)
+        # write(out,char)
     end
     return template
 end

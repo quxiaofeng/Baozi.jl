@@ -1,0 +1,58 @@
+Package: pandoc
+Priority: optional
+Section: universe/text
+Installed-Size: 48270
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian Haskell Group <pkg-haskell-maintainers@lists.alioth.debian.org>
+Architecture: amd64
+Version: 1.13.2.1~dfsg-1build6
+Depends: pandoc-data, libc6 (>= 2.15), libffi6 (>= 3.0.4), libgmp10, liblua5.1-0, libpcre3, libyaml-0-2, zlib1g (>= 1:1.1.4)
+Suggests: texlive-latex-recommended, texlive-xetex, texlive-luatex, pandoc-citeproc, etoolbox
+Filename: pool/universe/p/pandoc/pandoc_1.13.2.1~dfsg-1build6_amd64.deb
+Size: 6081184
+MD5sum: 7802eeccc7f55f8f47ba3487cfb2c0bc
+SHA1: 94e8c02ea96ecc0cd2cb837856dc9127f49195d7
+SHA256: 08276b3b073a160366edf00d47f404b18627e06c162c5647adba01489b0fd66c
+Description-en: general markup converter
+ Pandoc is a Haskell library for converting
+ from one markup format to another,
+ and a command-line tool that uses this library.
+ It can read markdown and (subsets of) HTML, reStructuredText,
+ LaTeX, DocBook, MediaWiki markup, Haddock markup,
+ OPML, Emacs Org-mode, txt2tags, and Textile,
+ and it can write markdown, reStructuredText, HTML,
+ LaTeX (including rendering as plain PDF or beamer slide shows),
+ ConTeXt, DocBook, OPML, OpenDocument, ODT, Word docx, RTF,
+ MediaWiki, DokuWiki, Textile, groff man pages, GNU Texinfo,
+ plain text, Emacs Org-Mode, AsciiDoc, Haddock markup,
+ EPUB (v2 or v3), FictionBook2, InDesign ICML,
+ and several kinds of HTML/javascript slide shows
+ (S5, Slidy, Slideous, DZSlides, reveal.js).
+ .
+ Pandoc extends standard markdown syntax
+ with footnotes, embedded LaTeX, definition lists, tables,
+ and other features.
+ A compatibility mode is provided
+ for those who need a drop-in replacement for Markdown.pl.
+ .
+ In contrast to existing tools for converting markdown to HTML,
+ which use regex substitutions,
+ pandoc has a modular design:
+ it consists of a set of readers, which parse text in a given format
+ and produce a native representation of the document,
+ and a set of writers,
+ which convert this native representation into a target format.
+ Thus,
+ adding an input or output format requires only adding a reader or writer.
+ .
+ This package contains the pandoc tool.
+ .
+ PDF output via PDFLaTeX requires the package texlive-latex-recommended.
+  * XeLaTeX additionally requires texlive-xetex
+  * LuaTeX additionally requires texlive-luatex
+  * content with YAML metadata additionally requires etoolbox
+Description-md5: fe39382ee279bf2ae87058d0bbf0d927
+Homepage: http://johnmacfarlane.net/pandoc/
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Origin: Ubuntu
+

@@ -1,5 +1,5 @@
 # Baozi
-Baozi is a simple static site generator implemented by Julia and Pandoc.
+Baozi is a simple static site generator implemented in pure Julia.
 
 Baozi only support Ubuntu currently, I can't not grantee you can use it on other systems.
 
