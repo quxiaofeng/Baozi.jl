@@ -7,9 +7,9 @@ const git_url = "git@github.com:Roger-luo/Baozi.jl.git"
 
 if length(ARGS)==0||ARGS[1]=="help"
     print("""
-        \e[1;39mBaozi --use Julia to generate your slides\e[0m
+        \e[1;39mBaozi --A static site generator in pure Julia\e[0m
 
-        Baozi is a pandoc based slide generator implemented by Julia, Baozi supports LaTeX by mathjax
+        Baozi supports LaTeX by mathjax, and slides by revealjs
         \e[1;39m===========\e[0m
         Options:
 
@@ -49,7 +49,7 @@ else
                 error("dir exists!\n")
             end
             cd("$(ARGS[i+1])");i+=2;
-            init()
+            init(pwd())
             write(".working_dir","$(pwd())")
             isdefined(:git_url)?run(`git remote add origin $git_url`):nothing
         else

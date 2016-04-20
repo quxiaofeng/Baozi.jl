@@ -54,11 +54,11 @@ function html(io::IO, content::Vector)
     hcount = 0
 
     for md in content
-        if typeof(md)<: Header && hcount == 0
+        if typeof(md)<: Header{1} && hcount == 0
             hcount+=1
             print(io,"<section")
             if md.attrs != nothing
-                for (attr, value) in attrs
+                for (attr, value) in md.attrs
                     print(io, " ")
                     htmlesc(io, attr)
                     print(io, "=\"")
@@ -67,12 +67,12 @@ function html(io::IO, content::Vector)
                 end
             end
             print(io,">\n")
-        elseif typeof(md)<: Header
+        elseif typeof(md)<: Header{1}
             hcount+=1
             print(io,"</section>\n")
             print(io,"<section")
             if md.attrs != nothing
-                for (attr, value) in attrs
+                for (attr, value) in md.attrs
                     print(io, " ")
                     htmlesc(io, attr)
                     print(io, "=\"")
@@ -91,14 +91,8 @@ end
 html(io::IO, md::MD) = html(io, md.content)
 
 function html{l}(io::IO, header::Header{l})
-    if header.attrs != nothing
-        withtag(io, "h$l", header.attrs...) do
-            htmlinline(io, header.text)
-        end
-    else
-        withtag(io, "h$l") do
-            htmlinline(io, header.text)
-        end
+    withtag(io, "h$l") do
+        htmlinline(io, header.text)
     end
 end
 

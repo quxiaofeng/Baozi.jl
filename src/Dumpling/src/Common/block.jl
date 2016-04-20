@@ -66,8 +66,9 @@ function hashheader(stream::IO, md::MD)
             h = readline(stream) |> strip
 
             # header with attributes
-            if ismatch(r"(.*?)( +#+)? +{(\w+=\w+)(,\w+=\w+)*}$", h)
-                h = match(r"(.*?)( +#+)? +{((\w+=\w+)([ ,]\w+=\w+)*)}$",h)
+            if ismatch(r"(.*?)( +#+)? +{(.+=.+)(,.+=.+)*}$", h)
+
+                h = match(r"(.*?)( +#+)? +{(.+=.+)(,.+=.+)*}$",h)
                 attr = Dict()
                 for item in split(h.captures[3],[',',' '])
                     temp = split(item,'=')
