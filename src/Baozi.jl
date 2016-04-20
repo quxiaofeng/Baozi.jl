@@ -57,8 +57,10 @@ function render_dir(dir::AbstractString,working_dir::AbstractString)
     cd(working_dir)
     template_dir = string(working_dir,"/_layouts")
 
+    @show dir
     dir_list = readdir(dir)
     content_list = filter(x->ismatch(r"(.*).md",x),dir_list)
+    length(content_list) !=0 || return
     map!(x->match(r"(.*).md",x).captures[1],content_list)
     content_list = [content_list [readstring("$(dir)/$(file).md")|>x->hexdigest("MD5",x) for file in content_list]]
 
@@ -91,7 +93,6 @@ end
 function gen(working_dir::AbstractString;commit=nothing)
     cd(working_dir)
     dir_list = filter(x->ismatch(r"_.*",x),filter(isdir,readdir()))
-    
 
     for dir in dir_list
         render_dir(dir,working_dir)
