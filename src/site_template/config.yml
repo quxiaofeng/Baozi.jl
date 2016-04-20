@@ -5,6 +5,7 @@ keywords: "Roger Luo, homepage, blog"
 
 # Site settings
 url: /home/roger/Codes/test/
+plugins: assets/plugins
 
 # baseurl: ""
 

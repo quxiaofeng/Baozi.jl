@@ -96,6 +96,7 @@ function template_render(out::IO, md::Dumpling.MD)
             for item in text
                 item=="page.content" && write(out,page["content"])
                 item=="site.url" && write(out,site["url"])
+                item=="site.plugins" && write(out,site["plugins"])
             end
         else
             char = read(template,Char)

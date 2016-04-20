@@ -51,10 +51,41 @@ end
 # Block elements
 
 function html(io::IO, content::Vector)
+    hcount = 0
+
     for md in content
+        if typeof(md)<: Header && hcount == 0
+            hcount+=1
+            print(io,"<section")
+            if md.attrs != nothing
+                for (attr, value) in attrs
+                    print(io, " ")
+                    htmlesc(io, attr)
+                    print(io, "=\"")
+                    htmlesc(io, value)
+                    print(io, "\"")
+                end
+            end
+            print(io,">\n")
+        elseif typeof(md)<: Header
+            hcount+=1
+            print(io,"</section>\n")
+            print(io,"<section")
+            if md.attrs != nothing
+                for (attr, value) in attrs
+                    print(io, " ")
+                    htmlesc(io, attr)
+                    print(io, "=\"")
+                    htmlesc(io, value)
+                    print(io, "\"")
+                end
+            end
+            print(io,">\n")
+        end
         html(io, md)
         println(io)
     end
+    hcount !=0 && print(io,"</section>")
 end
 
 html(io::IO, md::MD) = html(io, md.content)
