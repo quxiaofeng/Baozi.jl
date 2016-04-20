@@ -5,31 +5,30 @@ module Baozi
 using Nettle,YAML
 
 include("Dumpling/src/Dumpling.jl")
-include("pandoc.jl")
 include("template_parse.jl")
-using Pandoc
 
-# check if pandoc exists
-
-@windows_only error("Do not support Windows at present :-(\n")
+@windows_only warn("""
+    Do not support Windows at present :-(\n
+    However, you can try this on Windows
+    """)
 
 # For Ubuntu
-@unix_only if ENV["XDG_SESSION_DESKTOP"]=="ubuntu"
-    try
-        run(pipeline(`apt-cache show pandoc`,"pandoc_installed"))
-    catch
-        run(`sudo apt-get install pandoc`)
-        # error("Pandoc is not installed\n
-        #         try sudo apt-get insall pandoc\n")
-    end
-else
-    # warn on other unix system
-    warn("""
-        Well 
-        you could try this, but it may not work at present
-        ;-)
-        """)
-end
+# @unix_only if ENV["XDG_SESSION_DESKTOP"]=="ubuntu"
+#     try
+#         run(pipeline(`apt-cache show pandoc`,"pandoc_installed"))
+#     catch
+#         run(`sudo apt-get install pandoc`)
+#         # error("Pandoc is not installed\n
+#         #         try sudo apt-get insall pandoc\n")
+#     end
+# else
+#     # warn on other unix system
+#     warn("""
+#         Well 
+#         you could try this, but it may not work at present
+#         ;-)
+#         """)
+# end
 
 #####################
 # Init a Baozi site #
@@ -42,7 +41,9 @@ function init(name::AbstractString;git_remote=nothing)
         cp(string(dir,"/site_template"),"$(pwd())/$(name)")
     catch
     end
+
     global working_dir = "$(pwd())/$(name)"
+
     cp(string(dir,"/baozi"),"$(pwd())/$(name)/baozi")
     chmod("$(pwd())/$(name)/baozi",0o777)
 
@@ -79,19 +80,11 @@ function render_dir(dir::AbstractString,working_dir::AbstractString)
     dir_name = match(r"_(.*)",dir).captures[1]
     try mkdir("$(dir_name)") end
 
-    if dir_name=="slides"
-        # generate slides
-        for file in render_list
-            pandoc("_$(dir_name)/$(file).md";o="$(dir_name)/$(file).html",revealjs=true,standalone=true,template="$(template_dir)/slide.html")
-        end
-    elseif dir_name=="posts"
-        for file in render_list
-            pandoc("_$(dir_name)/$(file).md";o="$(dir_name)/$(file).html",toc=true,toc_depth=2,template="$(template_dir)/posts.html")
-        end
-    else
-        for file in render_list
-            pandoc("_$(dir_name)/$(file).md";o="$(dir_name)/$(file).html",toc=true,toc_depth=2,template="$(template_dir)/$(dir_name).html")
-        end
+    for file in render_list
+        f = open("$(dir_name)/$(file).html","w")
+        m = Dumpling.parse_file("_$(dir_name)/$(file).md")
+        template_render(f,m)
+        close(f)
     end
 end
 
@@ -104,8 +97,11 @@ function gen(working_dir::AbstractString;commit=nothing)
         render_dir(dir,working_dir)
     end
 
-    template_dir = string(pwd(),"/_layouts")
-    pandoc("README.md";o="index.html",toc=true,toc_depth=2,template="$(template_dir)/index.html")
+    f = open("index.html","w")
+    layout_dir = string(pwd(),"/_layouts")
+    m = Dumpling.parse_file("README.md")
+    template_render(f,m)
+    close(f)
 
     run(`git add *`)
     if commit==nothing&&length(dir_list)!=0

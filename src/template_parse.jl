@@ -77,7 +77,6 @@ function template_render(out::IO, md::Dumpling.MD)
         error("Did not choose a layout\n") 
     end
     # (title = get(md,"title")) || (title = nothing)
-    # (date = get(md,"date")) || (date = Dates.now())
 
     isfile("$(working_dir)/_layouts/$(layout).html") || (error("""
         Layout $(layout) was not been created
@@ -88,28 +87,24 @@ function template_render(out::IO, md::Dumpling.MD)
 
     page = md.attrs
     page["content"] = Dumpling.html(md.content)
+    (get(md,"date")) || (page["date"] = string(Dates.now()))
     site = YAML.load_file("$(working_dir)/config.yml")
     while !eof(template)
         if startswith(template,"{{")
             text = readuntil(template, "}}")
             text = split(text)
             for item in text
-                item=="page.content" && write(out,page["content"])
-                item=="site.url" && write(out,site["url"])
-                item=="site.plugins" && write(out,site["plugins"])
+                item = split(item,'.')
+                item[1] =="page" && write(out,page[item[2]])
+                item[1]=="site" && write(out,site[item[2]])
             end
         else
             char = read(template,Char)
             write(out,char)
         end
 
-        # if startswith(template,"{%")
-        #     text = readuntil(template,"%}",match="{%")
-        #     text = text|>parse|>eval
-        #     write(out,text)
-        # else
-        # char = read(template,Char)
-        # write(out,char)
+    # TODO:
+    # realize parser for commands
+
     end
-    return template
 end

@@ -8,11 +8,13 @@ run(`rm -rf test`)
 init("test")
 cd("test")
 
-t = Dumpling.parse_file("_slides/slide.md")
+gen(pwd())
+
 # t = Dumpling.parse_file("_slides/slide.md")
+# # t = Dumpling.parse_file("_slides/slide.md")
 
-mkdir("site")
+# mkdir("site")
 
-f=open("site/slide.html","w+")
+# f=open("site/slide.html","w+")
 
-template_render(f,t)
+# template_render(f,t)
