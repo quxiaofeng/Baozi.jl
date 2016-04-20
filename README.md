@@ -3,7 +3,7 @@ Baozi is a simple static site generator implemented in pure Julia.
 
 Baozi only support Ubuntu currently, I can't not grantee you can use it on other systems.
 
-[manual](example/manual.md)
+[manual](examples/manual.md)
 
 ## TO-DO
 
