@@ -20,18 +20,9 @@ end
 function init(name::AbstractString;git_remote=nothing)
     dir = dirname(@__FILE__)
 
-    try
-        cp(string(dir,"/site_template"),"$(pwd())/$(name)")
-    catch
-    end
-
-    global working_dir = "$(pwd())/$(name)"
-
+    cp(string(dir,"/site_template"),"$(pwd())/$(name)")
     cp(string(dir,"/baozi"),"$(pwd())/$(name)/baozi")
-    chmod("$(pwd())/$(name)/baozi",0o777)
-
-    run(`git init`)
-    git_remote!=nothing?run(`git remote add origin $(git_remote)`):nothing
+    @unix_only chmod("$(pwd())/$(name)/baozi",0o777)
 end
 
 function render_dir(dir::AbstractString)
@@ -67,6 +58,23 @@ function render_dir(dir::AbstractString)
     end
 end
 
+function generate_repo(config,commit)
+    if get(config,"repo",false)==false
+        return
+    end
+    
+    run(`git init`)
+    git_remote!=nothing?run(`git remote add origin $(git_remote)`):nothing
+    run(`git add *`)
+    if commit==nothing&&length(dir_list)!=0
+        try run(`git commit -m"update $(dir_list[1]),etc."`) end
+    elseif commit==nothing
+        try run(`git commit -m"update"`) catch print("nothing to commit") end
+    else
+        try run(`git commit -m"$commit"`) catch print("nothing to commit") end
+    end
+end
+
 function gen(;commit=nothing)
     cd(findconfig())
     dir_list = filter(x->ismatch(r"_.*",x),filter(isdir,readdir()))
@@ -83,16 +91,5 @@ function gen(;commit=nothing)
 
     config = YAML.load_file("config.yml")
 
-    if get(config,"repo",false)==false
-        return
-    end
-    
-    run(`git add *`)
-    if commit==nothing&&length(dir_list)!=0
-        try run(`git commit -m"update $(dir_list[1]),etc."`) end
-    elseif commit==nothing
-        try run(`git commit -m"update"`) catch print("nothing to commit") end
-    else
-        try run(`git commit -m"$commit"`) catch print("nothing to commit") end
-    end
+    @unix_only generate_repo(config,commit)
 end

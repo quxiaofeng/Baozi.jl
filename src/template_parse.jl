@@ -78,17 +78,17 @@ function template_render(out::IO, md::Dumpling.MD)
     end
     # (title = get(md,"title")) || (title = nothing)
 
-    isfile("$(working_dir)/_layouts/$(layout).html") || (error("""
+    isfile("_layouts/$(layout).html") || (error("""
         Layout $(layout) was not been created
         Please make sure you have the correct layout
         """))
 
-    template = IOBuffer(readstring("$(working_dir)/_layouts/$(layout).html"))
+    template = IOBuffer(readstring("_layouts/$(layout).html"))
 
     page = md.attrs
     page["content"] = Dumpling.html(md.content)
     (get(md,"date")) || (page["date"] = string(Dates.now()))
-    site = YAML.load_file("$(working_dir)/config.yml")
+    site = YAML.load_file("config.yml")
     while !eof(template)
         if startswith(template,"{{")
             text = readuntil(template, "}}")
