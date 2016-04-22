@@ -25,7 +25,8 @@ you can use `{}` to tweak the frames' attributes,eg. background color.
 ```LaTeX
 $$
 \begin{aligned}
-expr = a+b+\sqrt{2}
+expr1 &= a+b+\sqrt{2}\\
+expr2 &= c+d
 \end{aligned}
 $$
 ```
@@ -33,6 +34,7 @@ $$
 #
 $$
 \begin{aligned}
-expr = a+b+\sqrt{2}
+expr1 &= a+b+\sqrt{2}\\
+expr2 &= c+d
 \end{aligned}
 $$

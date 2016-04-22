@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Roger's Slides</title>
+    <link rel="icon" href="http://rogerluo.cc/image/favicon.png">
+    <link rel="stylesheet" href="assets/css/plain.css">
+  </head>
+  <body>
+    <div class="container">
+      <div id="markup">
+        <article id="content" class="markdown-body">
+        <section>
+<h1>Manual</h1>
+<p>This a manual for pandoc based static page generator Baozi. Baozi is implemented by <a href="http://julialang.org">Julia</a></p>
+<hr />
+</section>
+<section>
+<h1>Posts</h1>
+<p>posts are currently using the standard markdown. css and js support is under developing.</p>
+</section>
+<section>
+<h1>Slides</h1>
+<p>All the slides are based on revealjs and is converted by pandoc.</p>
+</section>
+<section>
+<h1>Guide</h1>
+<h2>use july in command line</h2>
+<p>To use this package, simply clone the repo to your local computer and type in the command line to initialize your site directory first:</p>
+<pre><code class="language-shell">&#123;path-to-the-repo&#125;/Baozi.jl/july init my_site 
+cd my_site</code></pre>
+<h3>generate posts/slides/...</h3>
+<p>first you have to configure the july file for some parameters <code>git_url</code> is for uploading to your git repo </p>
+<p>use the following command to generate your staff.</p>
+<pre><code class="language-shell">./july generate</code></pre>
+<h3>publish</h3>
+<p>use <code>publish</code> to publish your site to the <code>master</code> branch</p>
+<pre><code class="language-shell">./july publish</code></pre>
+<p>or you can use <code>publish&#61;gh-pages</code> to publish your site to the <code>gh-pages</code> branch</p>
+<h3>help</h3>
+<p>use <code>help</code> to check manual</p>
+<pre><code class="language-shell">./july help</code></pre>
+<h2>Edit Slides</h2>
+<p>each frame is marked by <code>#</code>:</p>
+<pre><code class="language-markdown"># &#40;new frame title&#41;
+
+# another frame
+## smaller title</code></pre>
+<h3>frame configuration</h3>
+<p>configuration should be included in <code>&#123;&#125;</code></p>
+<ul>
+<li><strong>id</strong> :: frame id begin with <code>#</code>,eg. <code>&#123;#this-is-a-frame-id&#125;</code></li>
+<li><strong>background</strong> :: <code>data-background</code>, eg.<code>&#123;data-background&#61;&quot;#DAA520&quot;&#125;</code></li>
+<li><strong>background transition</strong> :: <code>data-background-transition</code>,eg.<code>&#123;data-background-transition&#61;&quot;slide&quot;&#125;</code></li>
+<li><strong>fragment</strong> start with <code>&gt; -</code>,eg. &#96;&#96;&#96;markdown &gt; - fragment 1 &gt; - fragment 2 &gt; - fragment 3 &#96;&#96;&#96;</li>
+</ul>
+<hr />
+<p>&amp;copy;2016 All rights reserved. Made with <a href="http://rogerluo.cc/Baozi.jl">Baozi</a> and ♥</p>
+</section>
+        </article>
+      </div>
+    </div>
+  </body>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$$','$$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$$$', '$$$$'], ["\\[", "\\]"] ],
+          processEscapes: true
+        },
+        TeX: {
+          equationNumbers: {
+            autoNumber: 'AMS'
+          }
+        },
+        "HTML-CSS": {
+          imageFont: null
+        }
+      });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.1-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</html>

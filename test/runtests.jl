@@ -8,7 +8,7 @@ run(`rm -rf test`)
 init("test")
 cd("test")
 
-gen(pwd())
+gen()
 
 # t = Dumpling.parse_file("_slides/slide.md")
 # # t = Dumpling.parse_file("_slides/slide.md")
