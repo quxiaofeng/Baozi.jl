@@ -11,7 +11,7 @@ function findconfig()
 end 
 
 function render(dirname::AbstractString,filename::AbstractString)
-    f = open("$(dirname)/$(filename).html","w")
+    f = open("site/$(dirname)/$(filename).html","w")
     m = Dumpling.parse_file("_$(dirname)/$(filename).md")
     template_render(f,m)
     close(f)
@@ -27,9 +27,9 @@ end
 
 function render_dir(dir::AbstractString)
     findconfig()
-    layouts = string(pwd(),"/_layouts")
-
+    layouts = "_layouts"
     dir_list = readdir(dir)
+
     content_list = filter(x->ismatch(r"(.*).md",x),dir_list)
     length(content_list) !=0 || return
     map!(x->match(r"(.*).md",x).captures[1],content_list)
@@ -50,8 +50,8 @@ function render_dir(dir::AbstractString)
 
     writedlm("$dir/.cache",content_list)
 
-    dir_name = match(r"_(.*)",dir).captures[1]
-    try mkdir("$(dir_name)") end
+    dir_name = match(r"_(.*)",dir).captures[1] 
+    try mkdir("site/$(dir_name)") end
 
     for file in render_list
         render(dir_name,file)
@@ -79,12 +79,22 @@ function gen(;commit=nothing)
     cd(findconfig())
     dir_list = filter(x->ismatch(r"_.*",x),filter(isdir,readdir()))
 
+    try 
+        mkdir("site")
+    end
+
     for dir in dir_list
         render_dir(dir)
     end
 
-    f = open("index.html","w")
-    layout_dir = string(pwd(),"/_layouts")
+    dependency_list = filter(x->ismatch(r"^[^_].*$",x),filter(isdir,readdir()))
+    for file in dependency_list
+        if file!="site"
+            try cp(file,"site/$(file)") end
+        end
+    end
+
+    f = open("site/index.html","w")
     m = Dumpling.parse_file("README.md")
     template_render(f,m)
     close(f)

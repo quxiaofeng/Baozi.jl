@@ -26,12 +26,13 @@ function main()
                 i+=1
             elseif ARGS[i] == "post"
                 cp("_posts/example.md","_posts/$(ARGS[i+1]).md")
-                i+=1
+                i+=2
             elseif ARGS[i] == "slide"
                 cp("_slides/slide.md","_slides/$(ARGS[i+1]).md")
-                i+=1
+                i+=2
             elseif ARGS[i] == "publish"
                 run(`git push origin master`);
+                i+=1
             elseif ARGS[i]=="publish=gh-pages"
                 try 
                     run(`git checkout -b gh-pages`)
@@ -40,6 +41,7 @@ function main()
                 end
                 run(`git push origin gh-pages`);
                 run(`git checkout master`)
+                i+=1
             elseif ARGS[i]=="init"
                 init(ARGS[i+1])
                 i+=2
