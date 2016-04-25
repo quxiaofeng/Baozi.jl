@@ -12,7 +12,7 @@ Baozi only support Ubuntu currently, I can't not grantee you can use it on other
 - [ ] directory management
 - [ ] add basic css and js for posts
 - [ ] Markdown parser in pure Julia
-- 
+
 ## FUTURE
 
 - [ ] 尽可能兼容现有的 jekyll 和 hexo
