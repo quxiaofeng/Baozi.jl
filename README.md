@@ -22,7 +22,7 @@ Baozi only support Ubuntu currently, I can't not grantee you can use it on other
 - [ ] 保留所有非 _开头的目录和文件。 config.yml 中可设置忽略目录
 - [ ] 支持可配置的全局 permalink duoshuo disqus google analitics 等属性
 - [ ] 页面选项包括 mathjax katex revealjs highlight bib comment share 等属性
-- [ ] 移植一些主题： tufte（optimization.ml） zhuyingtai.ml。要尽量用选项一键切换。 
+- [ ] 移植一些主题： [tufte](http://clayh53.github.io/tufte-jekyll/)（[optimizations.ml](http://www.optimizations.ml/2015/08/02/introdction-to-nonlinear-optimization-by-fukushima/)），[zhuyingtai.ml](http://www.zhuyingtai.ml/julia-basics/)。要尽量用选项一键切换。 
 - [ ] ？自动化移植 jekyll 和 hexo 主题，或者动态提取主题
 - [ ] 页面内运行 julia 代码。将 Julia 代码返回的结果和生成的图片存入 HTML。
 - [ ] git 集成，一键部署，将管理与更新统一到一个工作流程中。简化流程。
